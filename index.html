@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Task Tracker</title>
+    <title>⏻ 25</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,52 +10,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6E23RMQB0X"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-6E23RMQB0X');
-    </script>
 </head>
 <body>
-    <script>
-    if (localStorage.getItem('dark_mode') === '1')
-        document.body.classList.add('dark');
-    </script>
+<script>
+  if (localStorage.getItem('dark_mode') === '1')
+    document.body.classList.add('dark');
+</script>
 
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <button class="sidebar-toggle" id="sidebarToggle">
-            <i style="font-size: 18px;"  class="bi bi-list"></i>
+            <i style="font-size: 18px;" class="bi bi-layout-sidebar"></i>
         </button>
         <span class="sidebar-title"></span>
     </div>
-    
+
     <nav class="sidebar-nav">
         <button class="sidebar-item active" data-project="">
-            <i style="font-size: 16px;" class="bi bi-collection"></i>
-            <span style="font-size: 14px;">Todas as Tarefas</span>
+            <i style="font-size: 16px;" class="bi bi-house"></i>
+            <span style="font-size: 14px;">Início</span>
         </button>
-        
+
         <div class="sidebar-divider"></div>
-        
+
         <div class="sidebar-section-header">
             <span>Projetos</span>
             <button class="sidebar-add-btn" id="addProjectBtn">
                 <i style="font-size: 16px;" class="bi bi-plus"></i>
             </button>
         </div>
-        
-        <div class="sidebar-projects" id="projectsList" style="font-size: 16px;">
-            <!-- Projetos serão inseridos aqui -->
-        </div>
+
+        <div class="sidebar-projects" id="projectsList" style="font-size: 16px;"></div>
     </nav>
-    
+
     <div class="sidebar-footer">
+        <button class="sidebar-item" id="sidebarSettings">
+            <i class="bi bi-gear"></i>
+            <span>Configurações</span>
+        </button>
         <button class="sidebar-item" id="sidebarDarkMode">
             <i class="bi bi-moon"></i>
             <span>Modo Escuro</span>
@@ -64,27 +57,74 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content " id="mainContent" >
-    <div class="main-header mx-auto" style="width: calc(96% - 10rem)!important;">
-        <h3 class="asimovian" id="currentProjectTitle">25m.in</h3>
-        <div class="header-actions">
-            <button id="addTask" class="btn rounded-pill border-0 btn-outline-dark me-2" style="font-size: 16px" title="Adicionar Tarefa">
-                Adicionar
-            </button>
-            <button id="showCompleted" class="btn rounded-pill border-0 btn-outline-dark me-2" style="font-size: 16px" title="Concluídas">
-                Concluídas
-            </button>
-            <button id="manageColumns" class="d-none btn rounded-pill border-0 btn-outline-dark me-2" title="Gerenciar Colunas">
-                <i class="bi bi-columns-gap"></i>
-            </button>
+<main class="main-content" id="mainContent">
+    <!-- Home View -->
+    <div class="home-view" id="homeView">
+        <div class="home-header">
+            <h1 > <span class="power">⏻</span><span class="brand-title">25</span></h1>
+            <p class="home-subtitle">a powered time bunker.</p>
+        </div>
 
+        <div class="home-projects-section">
+            <div class="home-section-header">
+                <h4>Seus Projetos</h4>
+                <button class="btn btn-sm btn-outline-dark rounded-pill" id="homeAddProject">
+                    <i class="bi bi-plus me-1"></i> Novo Projeto
+                </button>
+            </div>
+            <div class="projects-grid" id="projectsGrid"></div>
         </div>
     </div>
-    
-    <table class="table align-middle text-center mx-auto" style="width: calc(96% - 10rem)!important;" >
-        <thead><tr id="tableHead"></tr></thead>
-        <tbody id="taskTable"></tbody>
-    </table>
+
+    <!-- Project View -->
+    <div class="project-view d-none" id="projectView">
+        <div class="project-container">
+            <!-- Tasks Panel -->
+            <div class="tasks-panel container" id="tasksPanel">
+                <div class="main-header">
+                    <div class="header-title">
+                        <h3><span class="power">⏻</span> <span class="brand-title">25</span></span></h3>
+                        <span class="project-name" id="currentProjectName"></span>
+                    </div>
+                    <div class="header-actions">
+                        <button id="addTask" class="btn rounded-pill border-0 btn-outline-dark me-2" style="font-size: 16px">
+                            Adicionar
+                        </button>
+                        <button id="showCompleted" class="btn rounded-pill border-0 btn-outline-dark me-2" style="font-size: 16px">
+                            Concluídas
+                        </button>
+                    </div>
+                </div>
+                <table class="table align-middle text-center">
+                    <thead><tr id="tableHead"></tr></thead>
+                    <tbody id="taskTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Activities Panel (Split View) -->
+            <div class="activities-panel d-none" id="activitiesPanel">
+                <div class="activities-header">
+                    <h5 id="activitiesTitle">Atividades</h5>
+                    <button class="btn btn-sm btn-ghost" id="closeActivities">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="activities-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Início</th>
+                                <th>Fim</th>
+                                <th>Total</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activitiesTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Offcanvas Tarefas Concluídas -->
@@ -98,28 +138,6 @@
             <thead><tr id="completedHead"></tr></thead>
             <tbody id="completedTable"></tbody>
         </table>
-    </div>
-</div>
-
-<!-- Modal Gerenciar Colunas -->
-<div class="modal fade" id="columnsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Gerenciar Colunas</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="input-group mb-3">
-                    <input id="newColumnName" type="text" class="form-control" placeholder="Nova coluna">
-                    <button class="btn btn-success" id="addColumn">Adicionar</button>
-                </div>
-                <table>
-                    <thead><tr><th>Nome</th><th>Ações</th></tr></thead>
-                    <tbody id="columnsTable"></tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -142,29 +160,115 @@
     </div>
 </div>
 
-<!-- Modal Atividades -->
-<div class="modal fade" id="activitiesModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<!-- Modal Configurações -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content settings-modal-content">
+            <div class="settings-layout">
+                <div class="settings-sidebar">
+                    <button class="settings-nav-item" data-section="general">
+                        <i class="bi bi-gear"></i>
+                        Geral
+                    </button>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-header">
+                        <h5 class="settings-title" id="settingsTitle">Geral</h5>
+                        <button type="button" class="btn-close-minimal" data-bs-dismiss="modal">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <div class="settings-section active" data-section="general">
+                        <div class="settings-row">
+                            <div class="settings-row-label">
+                                <span>Aparência</span>
+                            </div>
+                            <div class="settings-row-control">
+                                <select id="themeSelect" class="settings-select">
+                                    <option value="light">Claro</option>
+                                    <option value="dark">Escuro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-row-label">
+                                <span>Botão 1</span>
+                                <small>Primeiro botão de timer rápido</small>
+                            </div>
+                            <div class="settings-row-control">
+                                <input type="number" id="timerBtn1" min="0" max="180" value="15" class="settings-input-number">
+                                <span class="input-suffix">min</span>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-row-label">
+                                <span>Botão 2</span>
+                                <small>Segundo botão de timer rápido</small>
+                            </div>
+                            <div class="settings-row-control">
+                                <input type="number" id="timerBtn2" min="0" max="180" value="25" class="settings-input-number">
+                                <span class="input-suffix">min</span>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-row-label">
+                                <span>Botão 3</span>
+                                <small>Terceiro botão de timer rápido</small>
+                            </div>
+                            <div class="settings-row-control">
+                                <input type="number" id="timerBtn3" min="0" max="180" value="45" class="settings-input-number">
+                                <span class="input-suffix">min</span>
+                            </div>
+                        </div>
+                        <p class="settings-hint">Use 0 para cronômetro livre (∞)</p>
+                        <div class="settings-row">
+                            <div class="settings-row-label">
+                                <span>Tick-tack durante o timer</span>
+                                <small>Toca um som de relógio enquanto o timer está ativo</small>
+                            </div>
+                            <div class="settings-row-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="enableSound" checked>
+                                    <span class="toggle-slider-new"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-row" id="volumeRow">
+                            <div class="settings-row-label">
+                                <span>Volume</span>
+                            </div>
+                            <div class="settings-row-control volume-control-row">
+                                <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider-new">
+                                <span class="volume-value-new" id="volumeValue">50%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Descrição da Atividade -->
+<div class="modal fade" id="activityDescModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Atividades</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">
+                    <i class="bi bi-check-circle me-2"></i>
+                    O que você fez?
+                </h5>
             </div>
             <div class="modal-body">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Início</th>
-                        <th>Fim</th>
-                        <th>Total</th>
-                        <th>Descrição</th>
-                    </tr>
-                    </thead>
-                    <tbody id="activitiesTable"></tbody>
-                </table>
+                <div class="activity-summary">
+                    <span class="activity-time" id="activityTimeSpent">00:00:00</span>
+                    <span class="activity-task" id="activityTaskName">Nome da tarefa</span>
+                </div>
+                <textarea id="activityDescription" class="form-control" rows="3" placeholder="Descreva o que foi realizado neste período..." autofocus></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-secondary" id="skipActivityDesc">Pular</button>
+                <button type="button" class="btn btn-primary" id="saveActivityDesc">Salvar</button>
             </div>
         </div>
     </div>
@@ -174,6 +278,6 @@
 <audio id="tickAudio" preload="none" src="tick.mp3"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="app2.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
